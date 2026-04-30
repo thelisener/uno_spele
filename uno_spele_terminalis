@@ -1,0 +1,229 @@
+'''''''''
+Sākuma funkcijas:
+1. Spēlētāju skaits (2 - 10 spēlētāji)
+2. Spēlētāju vārdi
+
+https://karsuspeles.lv/uno/
+
+Uno kāršu kavā kopumā ir 112 kārtis. To sadalījums:
+
+19 zilās kārtis: sanumurētas no 0 līdz 9;
+19 zaļās kārtis: no 0 līdz 9;
+19 dzeltenās kārtis: no 0 līdz 9;
+19  sarkanās kārtis: no 0 līdz 9;
+8 Skip jeb nākamā spēlētāja gājiena izlaišanas kārtis: divas no katras krāsas;
+8 Reverse jeb virzienu mainošās kārtis: divas no katras krāsas;
+8 Draw +2 kārtis: divas no katras krāsas;
+4 Wild kārtis, ar kurām var mainīt krāsu;
+4 Wild +4 kārtis: krāsas nomaiņa + nākamais spēlētājs uzņem četras kārtis;
+4 brīvās jeb tukšās kārtis.
+
+‘Skip’ Kārts
+Uno kavā ir 8 ‘Skip’ kārtis – 2 no katras krāsas. Ja Tu izspēlē šo kārti, tad nākamajam spēlētājam ir jāizlaiž gājiens. Gājiena izlaišanas kārti var likt tikai uz atbilstošo krāsu vai uz citu ‘Skip’ kārti. 
+
+’Reverse’ kārts
+Reverse kārts, uz kuras ir attēlotas divas bultiņas, maina spēlētāju gājienu virzienu. Ja parasti uno spēle norit pa pulksteņrādītāja virzienu, pēc šīs kārts likšanas galdā gājieni norit pretēji tam. Reverse kārti var likt galdā, ja sakrīt krāsa vai, ja galdā jau ir kāda cita Reverse kārts. 
+
+’Draw Two’ Kārts
+Ja tu galdā liec kādu no astoņām ‘Draw Two’ jeb +2 kārtīm, tad nākamajam dalībniekam ir jāuzceļ divas kārtis un jāizlaiž gājiens. Arī šo kārti var izspēlēt tikai tad, ja tā sakrīt ar iepriekšējās krāsu vai citu +2 kārti.
+
+’Wild’ kārts
+Melno ‘Wild’ kārti izmanto, lai nomainītu kāršu kaudzes krāsu. Piemēram, Tev nav ne atbilstošas krāsas, ne cipara kārts, tāpēc Tu galdā liec ‘Wild’ kārti, lai nomainītu krāsu uz sev izdevīgāku. ‘Wild’ kārti var likt uz visām kārtīm, izņemot melnajām kārtīm – ‘Wild’ un ‘Wild Draw Four’. Jāatzīst, ka draugu lokā šo pēdējo noteikumu var arī neievērot.
+
+’Wild Draw Four’ Kārts
+‘Draudzības iznīcinātāja’ kārts jeb ‘Wild Draw Four’. Kad šī kārts tiek likta galdā, nākamais dalībnieks lej gaužas asaras, jo rokās jāuzņem četras kārtis un jāizlaiž gājiens. Šīs kārts licējs var izvēlēties arī turpmāko krāsu. Svarīgi piebilst, ka +4 kārti var likt galdā tikai tad, ja Tev rokās nav neviena cita izmantojama kārts! Ja dalībniekam, kuram ir jāuzņem 4 kārtis, ir aizdomas, ka tu melo, viņš/-a var pieprasīt uzrādīt Tavas kārtis! Ja Tu tiec pieķerts melos, tad četras kārtis ir jāuzņem vien pašam.
+
+Wild ‘Tukšās kārtis’
+Mūsdienu uno kāršu komplektos ir atrodamas četras melnās ‘Wild’ kārtis, kas nav pieskaitāmas ne pie parastām ‘Wild’ vai ‘Wild+4’ kārtīm. Šīs kārtis var uzskatīt kā ‘Jokerus’. Parasti uz vienas no šīm četrām kārtīm ir norādīts kāds no diviem apzīmējumiem: 
+1) Switch Cards jeb samainīt kārtis; 
+2) Shuffle Cards – samaisīt kārtis. Switch Cards nozīmē to, ka dalībnieks var izvēlēties vienu no spēlētājiem, ar kuru apmainīties ar kārtīm. Tikmēr Shuffle Cards nozīmē to, ka visi dalībnieki noliek savas kārtis, tās tiek samaisītas un izdalītas katram spēlētājam vienādā skaitā. Tikmēr atlikušās trīs tukšās kārtis var izmantot pēc saviem ieskatiem, piemēram, izdomājot paši savus noteikumus. Tāpat, ar kādu no šīm trīs kārtīm, var aizvietot pazaudētu kārti – tukšajā vietā ieraksti, kas šī ir par kārti.
+
+Spēles gaita:
+Sākums:
+1. Katram spēlētājam izdala 7 samaisītas kārtis, nosaka kāršu dīleri
+2. Pārējās kārtis noliek vidū ar seju uz leju, izvelk vienu kārti no kravas
+3. Pirmo gājienu izdara spēlētājs pa kreisi no dīlera
+
+Soļi:
+1. Spēlētājs atbrīvojas no vienas kārts, kura sakrīt ar pēdējās kārts kaudzē krāsu, ciparu vai simbolu
+
+2. Ja spēlētāja kāršu ar tādu pašu krāsu un simboli, tad liek Wild kārtis
+   Melnās Wild kārtis var likt virsū jebkurai kārtij, kamēr Reverse, Skip un Draw Two ir noteikta krāsa. 
+
+3. Ja nav atbilstošu kāršu, tad paceļ vienu no kāršu kaudzes
+
+4. Tam, kurš ir atbrīvojies no visām kārtīm, pieskaita punktus par pārējo dalībnieku kārtīm
+
+0-9 punkti par parastajām kārtīm, kas apzīmētas ar cipariem. Punktu skaits atbilst kārts nominālvērtībai;
+20 punkti par +2, Skip un Reverse kārti;
+50 punkti par Wild, Wild+4 kārti.
+
+Pirmais, kurš sakrāj 500 punktus, uzvar
+
+'''''''''
+import random
+class spele_uno():
+    def __init__(self):
+        self.visi_speletaji = []
+        self.speles_stavoklis: str = "skaita ievade"
+        self.gajiens = 0
+        self.kurs_speletajs = 0
+        self.t = 0
+        self.karts_no_kaudzes = ""
+    def speletaju_sk(self):
+        global spelet_sk
+        spelet_sk = int(input("Ievadi no 2 - 10 spēlētāju skaitu:"))
+        if spelet_sk < 2:
+            spelet_sk = int(input("Spēlētāju skaits nevar būt mazāks par 2:"))
+        if spelet_sk > 10:
+            spelet_sk = int(input("Spēlētāju skaits nevar būt lielāks par 10:"))
+        else:
+            self.speles_stavoklis = "vārdu ievade"
+    def speletaju_vardu_ievade(self):
+        #global kurs_speletajs
+        for i in range(spelet_sk):
+            vards = input(f"Ievadi {i+1}. spēlētāja vārdu:")
+            self.visi_speletaji.append(vards)
+        # tiek nejauši izvēlēts pirmais spēlētājs
+        self.kurs_speletajs = random.randint(0, len(self.visi_speletaji)-1)
+        self.speles_stavoklis = "izdalīt kārtis"
+    def karsu_izdale(self):
+        global kaudze 
+        kartis = ["0B","1B","2B","3B","4B","5B","6B","7B","8B","9B",
+                  "0G","1G","2G","3G","4G","5G","6G","7G","8G","9G",
+                  "0Y","1Y","2Y","3Y","4Y","5Y","6Y","7Y","8Y","9Y",
+                  "0R","1R","2R","3R","4R","5R","6R","7R","8R","9R",
+                  "SkB","SkB","SkG","SkG","SkY","SkY","SkR","SkR",
+                  "RevB","RevB","RevG","RevG","RevY","RevY","RevR","RevR",
+                  "Dr2B","Dr2B","Dr2G","Dr2G","Dr2Y","Dr2Y","Dr2R","Dr2R",
+                  "W","W","W","W",
+                  "W4","W4","W4","W4",
+                  "WE","WE","WE","WE"]
+        kaudze = random.sample(kartis, k=len(kartis))
+        for poz in range(len(self.visi_speletaji)):
+            spel = speletajs(self.visi_speletaji[poz])
+            spel_kaudz = random.sample(kaudze, k=7)
+            for karts in spel_kaudz:
+                kaudze.remove(karts)
+            spel.pievienot_kartis(spel_kaudz)
+            self.visi_speletaji.pop(poz)
+            self.visi_speletaji.insert(poz, spel)
+            #print(spel.spel_vards,spel.speletaja_kartis)
+        #print(kaudze)
+        # Izvēlēta kārts, uz kuras pirmais spēlētājs atmetīs kārti
+        self.karts_no_kaudzes = kaudze[-1]
+        self.speles_stavoklis = "spēlēt spēli"
+    def speles_gaita(self):
+        #print(self.t)
+        #print(self.kurs_speletajs)
+        print(self.karts_no_kaudzes)
+        
+        self.gajiens + 1 # Pieskaita gājienu
+        karta = self.kurs_speletajs + self.t
+        #print(karta)
+        
+        # Pārbauda, vai nepārsniedz spēlētāju daudzumu
+        if karta  > (len(self.visi_speletaji) - 1):
+            self.kurs_speletajs = 0
+            self.t = -1
+        else:
+            # Izspēlē spēlētājs
+            self.visi_speletaji[karta].izspelet_karti(self.karts_no_kaudzes)
+            
+            #print(self.kurs_speletajs)
+            #print(self.t)
+        
+        #print("\033c")
+        print("\n")
+            
+class speletajs():
+    def __init__(self, spel_vards: str):
+        self.speletaja_kartis = []
+        self.spel_vards = spel_vards
+        self.nakamajam_speletajam = ""
+    def pievienot_kartis(self, krava):
+        for i in krava:
+            self.speletaja_kartis.append(i)
+            
+    def izspelet_karti(self, kaudzes_karts):
+        print([f"{i+1}.: {self.speletaja_kartis[i]}" for i in range(len(self.speletaja_kartis))])
+        turn = True
+        while turn:
+            # Pārbauda, vai ievada ciparu
+            cip = int(input(f"{self.spel_vards} Kuru kārti izspēlēt: "))
+
+            if 0 < cip <= len(self.speletaja_kartis):
+                # Izspēlētā kārts
+                karts = self.speletaja_kartis[cip-1]
+                #kārts krāsa
+                krasa = karts[-1]
+                #print(f"krāsa: {krasa}")
+                #kārts simbols
+                simbols = karts[:-1]
+                #print(f"simbols: {simbols}")
+                # Pārbauda, vai kārtij ir vai nu pareizais simbols, vai krāsa
+
+                if kaudzes_karts.find(krasa) != -1 or kaudzes_karts.find(simbols) != -1 and karts is not "W" or "W4" or "WE":
+                
+                    #Ja ir 'skip' kārts, nākamais spēlētājs izlaiž gājienu
+                    if simbols == "Sk" and krasa == kaudzes_karts[-1]:
+                        print(f"Kārts {karts} ir izspēlēta, nākamajam spēlētājam jāizlaiž gājiens")
+                        self.nakamajam_speletajam = "Jāizlaiž gājiens"
+                        print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
+
+                    else:
+                        print(f"Kārts {karts} ir izspēlēta")
+                        self.nakamajam_speletajam = ""
+                        turn = False
+
+                # Izspēlē Wild kārti
+                elif karts == "W" and kaudzes_karts != "W" or "W4" or "WE":
+                    print(f"Kārts {karts} ir izspēlēta")
+
+                #Ja ir 'W4' kārts, nākamais spēlētājs uzņem 4 kārtis   
+                elif karts == "W4" and kaudzes_karts != "W" or "W4" or "WE":
+                    print(f"Kārts {karts} ir izspēlēta, nākamajam spēlētājam jāuzņem 4 kārtis")
+                    self.nakamajam_speletajam = "Jāuzņem 4"
+                    #print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
+                    turn = False
+
+                # Izspēlē kārti, kuru vēlāk jāprecizē    
+                elif karts == "WE" and kaudzes_karts != "W" or "W4" or "WE":
+                    print(f"Kārts {karts} ir izspēlēta, nākamajam spēlētājam jāuzņem 4 kārtis")
+                    self.nakamajam_speletajam = "jādara kas cits"
+                    #print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
+                    turn = False
+
+                # Nevar izspēlēt izvēlēto kārti
+                else:
+                    print(f"jāizvēlas cita kārts")
+                    cip = int(input(f"{self.spel_vards} Kuru kārti izspēlēt: "))
+
+            else:
+                print(f"Nav kārts ar kārtas skaitli {cip}")
+                #cip = int(input(f"{self.spel_vards} Kuru kārti izspēlēt: ")) 
+
+        
+        
+        
+        
+loop = False        
+
+spele = spele_uno()
+if spele.speles_stavoklis == "skaita ievade":
+    spele.speletaju_sk()
+if spele.speles_stavoklis == "vārdu ievade":
+    print("\033c")
+    spele.speletaju_vardu_ievade()
+if spele.speles_stavoklis == "izdalīt kārtis":
+    print("\033c")
+    spele.karsu_izdale()
+if spele.speles_stavoklis == "spēlēt spēli":
+    print("\033c")
+    #spele.speles_gaita()
+    loop = True
+
+while loop == True:
+    #print(t)
+    spele.speles_gaita()
+    spele.t+=1
