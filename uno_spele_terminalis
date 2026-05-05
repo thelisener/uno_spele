@@ -147,63 +147,102 @@ class speletajs():
             
     def izspelet_karti(self, kaudzes_karts):
         print([f"{i+1}.: {self.speletaja_kartis[i]}" for i in range(len(self.speletaja_kartis))])
+        
+        
         turn = True
+        
         while turn:
-            # Pārbauda, vai ievada ciparu
+            
+            # Ievade izvēlētajai kārtij
             cip = int(input(f"{self.spel_vards} Kuru kārti izspēlēt: "))
-
+            
+            # Pārbauda, vai kārts ar ievadīto ciparu
             if 0 < cip <= len(self.speletaja_kartis):
+                
                 # Izspēlētā kārts
                 karts = self.speletaja_kartis[cip-1]
-                #kārts krāsa
-                krasa = karts[-1]
-                #print(f"krāsa: {krasa}")
-                #kārts simbols
-                simbols = karts[:-1]
-                #print(f"simbols: {simbols}")
-                # Pārbauda, vai kārtij ir vai nu pareizais simbols, vai krāsa
-
-                if kaudzes_karts.find(krasa) != -1 or kaudzes_karts.find(simbols) != -1 and karts is not "W" or "W4" or "WE":
                 
-                    #Ja ir 'skip' kārts, nākamais spēlētājs izlaiž gājienu
-                    if simbols == "Sk" and krasa == kaudzes_karts[-1]:
-                        print(f"Kārts {karts} ir izspēlēta, nākamajam spēlētājam jāizlaiž gājiens")
-                        self.nakamajam_speletajam = "Jāizlaiž gājiens"
-                        print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
-
-                    else:
-                        print(f"Kārts {karts} ir izspēlēta")
-                        self.nakamajam_speletajam = ""
-                        turn = False
-
-                # Izspēlē Wild kārti
-                elif karts == "W" and kaudzes_karts != "W" or "W4" or "WE":
-                    print(f"Kārts {karts} ir izspēlēta")
-
-                #Ja ir 'W4' kārts, nākamais spēlētājs uzņem 4 kārtis   
-                elif karts == "W4" and kaudzes_karts != "W" or "W4" or "WE":
-                    print(f"Kārts {karts} ir izspēlēta, nākamajam spēlētājam jāuzņem 4 kārtis")
-                    self.nakamajam_speletajam = "Jāuzņem 4"
-                    #print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
-                    turn = False
-
-                # Izspēlē kārti, kuru vēlāk jāprecizē    
-                elif karts == "WE" and kaudzes_karts != "W" or "W4" or "WE":
-                    print(f"Kārts {karts} ir izspēlēta, nākamajam spēlētājam jāuzņem 4 kārtis")
-                    self.nakamajam_speletajam = "jādara kas cits"
-                    #print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
-                    turn = False
-
-                # Nevar izspēlēt izvēlēto kārti
+                #kārts simbols
+                if len(karts) > 1:
+                    simbols = karts[:-1]
+                    #kārts krāsa
+                    krasa = karts[-1]
+                    
                 else:
-                    print(f"jāizvēlas cita kārts")
-                    cip = int(input(f"{self.spel_vards} Kuru kārti izspēlēt: "))
-
+                    simbols = karts[0]
+                    krasa = ''
+                                        
+                #print(f"krāsa: {krasa}")
+                #print(f"simbols: {simbols}")
+                
+                # Salīdzina, kas ir simbols
+                match simbols:
+                    case "W":
+                        match krasa:
+                            case '':
+                                if kaudzes_karts != "W" or "W4":
+                                    print(f"Kārts {karts} ir izspēlēta")
+                                    turn = False
+                                else:
+                                    print(f"jāizvēlas cita kārts")
+                                    #cip = int(input(f"{self.spel_vards} Kuru kārti izspēlēt: "))
+                            case '4':
+                                if kaudzes_karts != "W" or "W4":
+                                    print(f"Kārts {karts} ir izspēlēta")
+                                    self.nakamajam_speletajam = "Jāuzņem 4"
+                                    print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
+                                else:
+                                    print(f"jāizvēlas cita kārts")
+                                    #cip = int(input(f"{self.spel_vards} Kuru kārti izspēlēt: "))                    
+                            case 'E':
+                                pass
+                    case "Sk":
+                        match kaudzes_karts.find(krasa):
+                            case -1:
+                                print(f"jāizvēlas cita kārts")
+                                #cip = int(input(f"{self.spel_vards} Kuru kārti izspēlēt: "))
+                            case _:
+                                #Ja ir 'skip' kārts, nākamais spēlētājs izlaiž gājienu
+                                self.nakamajam_speletajam = "Jāizlaiž gājiens"
+                                print(f"Kārts {karts} ir izspēlēta")
+                                print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
+                                turn = False
+                                
+                    case "Rev":
+                        match kaudzes_karts.find(simbols):
+                            case -1:
+                                print(f"jāizvēlas cita kārts")
+                                #cip = int(input(f"{self.spel_vards} Kuru kārti izspēlēt: "))
+                            case _:
+                                #Ja ir 'reverse' kārts, mainās spēles gājienu virziens
+                                self.nakamajam_speletajam = "Mainās gājienu virziens"
+                                print(f"Kārts {karts} ir izspēlēta")
+                                print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
+                                turn = False
+                    case "Dr2":
+                        # Pie "Draw+2" nākamajam spēlētājam ir jāuzceļ divas kārtis un jāizlaiž gājiens
+                        if kaudzes_karts.find(krasa) != -1 or kaudzes_karts.find(simbols) != -1:
+                            self.nakamajam_speletajam = "Jāuzceļ divas kārtis un jāizlaiž gājiens"
+                            print(f"Kārts {karts} ir izspēlēta")
+                            print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
+                            turn = False
+                        else:
+                            print(f"jāizvēlas cita kārts")
+                            #cip = int(input(f"{self.spel_vards} Kuru kārti izspēlēt: "))                        
+                    case _:
+                        
+                        if kaudzes_karts.find(krasa) != -1 or kaudzes_karts.find(simbols) != -1 or kaudzes_karts == "W" or "W4" or "WE":
+                            print(f"Kārts {karts} ir izspēlēta")
+                            self.nakamajam_speletajam = ""
+                            turn = False
+                        elif kaudzes_karts.find(krasa) == -1 or kaudzes_karts.find(simbols) == -1:
+                            print(f"jāizvēlas cita kārts")
+                            #cip = int(input(f"{self.spel_vards} Kuru kārti izspēlēt: "))
+                            
             else:
                 print(f"Nav kārts ar kārtas skaitli {cip}")
                 #cip = int(input(f"{self.spel_vards} Kuru kārti izspēlēt: ")) 
 
-        
         
         
         
