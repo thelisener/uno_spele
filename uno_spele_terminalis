@@ -62,6 +62,8 @@ Pirmais, kurš sakrāj 500 punktus, uzvar
 
 '''''''''
 import random
+
+##################################################### Spēle
 class spele_uno():
     def __init__(self):
         self.visi_speletaji = []
@@ -69,6 +71,7 @@ class spele_uno():
         self.gajiens = 0
         self.kurs_speletajs = 0
         self.t = 0
+        self.t_virziens = "+"
         self.karts_no_kaudzes = ""
         self.nakamais = ''
     def speletaju_sk(self):
@@ -128,15 +131,44 @@ class spele_uno():
             self.kurs_speletajs = 0
             self.t = -1
         else:
+            print(f"t:{self.t}\t")
+            print(f"t virziens:{self.t_virziens}\t")
             # Izspēlē spēlētājs
             self.visi_speletaji[karta].izspelet_karti(self.karts_no_kaudzes)
+            
+            #Kaudzei pievieno kārti
+            #kaudze.append()
+            
             #Ko jādara nākamajam spēlētājam
-            self.nakamais 
+            self.nakamais =  self.visi_speletaji[karta].nakamajam_speletajam
+            match self.nakamais:
+                case "Jāizlaiž gājiens":
+                    self.t += 1
+                case "Mainās gājienu virziens":
+                    match self.t_virziens:
+                        case "+":
+                           self.t_virziens = "-"
+                        case "-":
+                           self.t_virziens = "+"
+                case "Jāuzceļ divas kārtis un jāizlaiž gājiens":
+                    self.t += 1
+                    print("+2 kārtis")
+                case  "Jāuzņem 4":
+                    print("+4 kārtis")
+                case _:
+                    pass
+                    
+                    
+
+            
+            
             #print(self.kurs_speletajs)
             #print(self.t)
         
         #print("\033c")
         print("\n")
+
+################################################################ Katram spēlētājam
             
 class speletajs():
     def __init__(self, spel_vards: str):
@@ -144,6 +176,7 @@ class speletajs():
         self.spel_vards = spel_vards
         self.nakamajam_speletajam = ""
         self.visas_kartis = len(self.speletaja_kartis) - self.speletaja_kartis.count("W4")
+        self.karts = ""
     def pievienot_kartis(self, krava):
         for i in krava:
             self.speletaja_kartis.append(i)
@@ -163,16 +196,16 @@ class speletajs():
             if 0 < cip <= len(self.speletaja_kartis):
                 
                 # Izspēlētā kārts
-                karts = self.speletaja_kartis[cip-1]
+                self.karts = self.speletaja_kartis[cip-1]
                 
                 #kārts simbols
-                if len(karts) > 1:
-                    simbols = karts[:-1]
+                if len(self.karts) > 1:
+                    simbols = self.karts[:-1]
                     #kārts krāsa
-                    krasa = karts[-1]
+                    krasa = self.karts[-1]
                     
                 else:
-                    simbols = karts[0]
+                    simbols = self.karts[0]
                     krasa = ''
                                         
                 #print(f"krāsa: {krasa}")
@@ -180,19 +213,20 @@ class speletajs():
                 
                 # Salīdzina, kas ir simbols
                 match simbols:
-                    case "W":
+                    
+                    case "W": # Kāda Wild kārts
                         match krasa:
-                            case '':
+                            case '': # Wild
                                 match kaudzes_karts:
                                     case "W":
                                         print(f"jāizvēlas cita kārts")                                   
                                     case "W4":
                                         print(f"jāizvēlas cita kārts")
                                     case _:
-                                        print(f"Kārts {karts} ir izspēlēta")
+                                        print(f"Kārts {self.karts} ir izspēlēta")
                                         turn = False
                                
-                            case '4':
+                            case '4': # Wild draw 4
                                 match kaudzes_karts:
                                     case "W" :
                                         print(f"jāizvēlas cita kārts")
@@ -208,7 +242,7 @@ class speletajs():
                                                 #kārts krāsa
                                                 kr = k[-1]
                                             else:
-                                                simb = karts[0]
+                                                simb = self.karts[0]
                                                 kr = ''
                                             match kaudzes_karts.find(kr):
                                                 case -1:
@@ -228,34 +262,34 @@ class speletajs():
                                                     break
                                         match kura_karts:
                                             case self.visas_kartis:
-                                                print(f"Kārts {karts} ir izspēlēta")
+                                                print(f"Kārts {self.karts} ir izspēlēta")
                                                 self.nakamajam_speletajam = "Jāuzņem 4"
                                                 print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")                  
                                             case _:
                                                 continue           
-                            case 'E':
+                            case 'E': # Wild tukšā kārts
                                 pass
                             
-                    case "Sk":
+                    case "Sk": # Skip
                         match kaudzes_karts.find(simbols):
                             case -1:
                                 match kaudzes_karts:
                                     case "W":
                                         #Ja ir 'skip' kārts, nākamais spēlētājs izlaiž gājienu
                                         self.nakamajam_speletajam = "Jāizlaiž gājiens"
-                                        print(f"Kārts {karts} ir izspēlēta")
+                                        print(f"Kārts {self.karts} ir izspēlēta")
                                         print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
                                         turn = False 
                                     case "W4":
                                         #Ja ir 'skip' kārts, nākamais spēlētājs izlaiž gājienu
                                         self.nakamajam_speletajam = "Jāizlaiž gājiens"
-                                        print(f"Kārts {karts} ir izspēlēta")
+                                        print(f"Kārts {self.karts} ir izspēlēta")
                                         print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
                                         turn = False
                                     case "WE":
                                         #Ja ir 'skip' kārts, nākamais spēlētājs izlaiž gājienu
                                         self.nakamajam_speletajam = "Jāizlaiž gājiens"
-                                        print(f"Kārts {karts} ir izspēlēta")
+                                        print(f"Kārts {self.karts} ir izspēlēta")
                                         print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
                                         turn = False
                                     case _:
@@ -266,36 +300,36 @@ class speletajs():
                                             case _:
                                                 #Ja ir 'skip' kārts, nākamais spēlētājs izlaiž gājienu
                                                 self.nakamajam_speletajam = "Jāizlaiž gājiens"
-                                                print(f"Kārts {karts} ir izspēlēta")
+                                                print(f"Kārts {self.karts} ir izspēlēta")
                                                 print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
                                                 turn = False
                             case _:
                                 #Ja ir 'skip' kārts, nākamais spēlētājs izlaiž gājienu
                                 self.nakamajam_speletajam = "Jāizlaiž gājiens"
-                                print(f"Kārts {karts} ir izspēlēta")
+                                print(f"Kārts {self.karts} ir izspēlēta")
                                 print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
                                 turn = False
                                 
-                    case "Rev":
+                    case "Rev": # Reverse
                         match kaudzes_karts.find(simbols):
                             case -1:
                                 match kaudzes_karts:
                                     case "W":
                                         #Ja ir 'reverse' kārts, mainās spēles gājienu virziens
                                         self.nakamajam_speletajam = "Mainās gājienu virziens"
-                                        print(f"Kārts {karts} ir izspēlēta")
+                                        print(f"Kārts {self.karts} ir izspēlēta")
                                         print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
                                         turn = False 
                                     case "W4":
                                         #Ja ir 'reverse' kārts, mainās spēles gājienu virziens
                                         self.nakamajam_speletajam = "Mainās gājienu virziens"
-                                        print(f"Kārts {karts} ir izspēlēta")
+                                        print(f"Kārts {self.karts} ir izspēlēta")
                                         print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
                                         turn = False
                                     case "WE":
                                         #Ja ir 'reverse' kārts, mainās spēles gājienu virziens
                                         self.nakamajam_speletajam = "Mainās gājienu virziens"
-                                        print(f"Kārts {karts} ir izspēlēta")
+                                        print(f"Kārts {self.karts} ir izspēlēta")
                                         print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
                                         turn = False
                                     case _:
@@ -306,34 +340,34 @@ class speletajs():
                                             case _:
                                                 #Ja ir 'reverse' kārts, mainās spēles gājienu virziens
                                                 self.nakamajam_speletajam = "Mainās gājienu virziens"
-                                                print(f"Kārts {karts} ir izspēlēta")
+                                                print(f"Kārts {self.karts} ir izspēlēta")
                                                 print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
                                                 turn = False
                             case _:
                                 #Ja ir 'reverse' kārts, mainās spēles gājienu virziens
                                 self.nakamajam_speletajam = "Mainās gājienu virziens"
-                                print(f"Kārts {karts} ir izspēlēta")
+                                print(f"Kārts {self.karts} ir izspēlēta")
                                 print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
                                 turn = False
                                 
-                    case "Dr2":
+                    case "Dr2": # Draw 2
                         # Pie "Draw+2" nākamajam spēlētājam ir jāuzceļ divas kārtis un jāizlaiž gājiens
                         match kaudzes_karts.find(simbols):
                             case -1:
                                 match kaudzes_karts:
                                     case "W":
                                         self.nakamajam_speletajam = "Jāuzceļ divas kārtis un jāizlaiž gājiens"
-                                        print(f"Kārts {karts} ir izspēlēta")
+                                        print(f"Kārts {self.karts} ir izspēlēta")
                                         print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
                                         turn = False
                                     case "W4":
                                         self.nakamajam_speletajam = "Jāuzceļ divas kārtis un jāizlaiž gājiens"
-                                        print(f"Kārts {karts} ir izspēlēta")
+                                        print(f"Kārts {self.karts} ir izspēlēta")
                                         print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
                                         turn = False
                                     case "WE":
                                         self.nakamajam_speletajam = "Jāuzceļ divas kārtis un jāizlaiž gājiens"
-                                        print(f"Kārts {karts} ir izspēlēta")
+                                        print(f"Kārts {self.karts} ir izspēlēta")
                                         print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
                                         turn = False
                                     case _:
@@ -343,29 +377,29 @@ class speletajs():
                                                 #cip = int(input(f"{self.spel_vards} Kuru kārti izspēlēt: "))
                                             case _:
                                                 self.nakamajam_speletajam = "Jāuzceļ divas kārtis un jāizlaiž gājiens"
-                                                print(f"Kārts {karts} ir izspēlēta")
+                                                print(f"Kārts {self.karts} ir izspēlēta")
                                                 print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
                                                 turn = False                                   
                             case _:
                                 self.nakamajam_speletajam = "Jāuzceļ divas kārtis un jāizlaiž gājiens"
-                                print(f"Kārts {karts} ir izspēlēta")
+                                print(f"Kārts {self.karts} ir izspēlēta")
                                 print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
                                 turn = False
                                               
-                    case _:
+                    case _: # Kārtis ar ciparu un krāsu
                         match kaudzes_karts.find(simbols):
                             case -1:
                                 match kaudzes_karts:
                                     case "W":
-                                        print(f"Kārts {karts} ir izspēlēta")
+                                        print(f"Kārts {self.karts} ir izspēlēta")
                                         self.nakamajam_speletajam = ""
                                         turn = False
                                     case "W4":
-                                        print(f"Kārts {karts} ir izspēlēta")
+                                        print(f"Kārts {self.karts} ir izspēlēta")
                                         self.nakamajam_speletajam = ""
                                         turn = False
                                     case "WE":
-                                        print(f"Kārts {karts} ir izspēlēta")
+                                        print(f"Kārts {self.karts} ir izspēlēta")
                                         self.nakamajam_speletajam = ""
                                         turn = False
                                     case _:
@@ -374,12 +408,12 @@ class speletajs():
                                                 print(f"jāizvēlas cita kārts")
                                                 #cip = int(input(f"{self.spel_vards} Kuru kārti izspēlēt: "))
                                             case _:
-                                                print(f"Kārts {karts} ir izspēlēta")
+                                                print(f"Kārts {self.karts} ir izspēlēta")
                                                 self.nakamajam_speletajam = ""
                                                 turn = False                           
                             
                             case _:
-                                print(f"Kārts {karts} ir izspēlēta")
+                                print(f"Kārts {self.karts} ir izspēlēta")
                                 self.nakamajam_speletajam = ""
                                 turn = False
             elif cip == 0:
@@ -389,7 +423,7 @@ class speletajs():
                 print(f"Nav kārts ar kārtas skaitli {cip}")
                 #cip = int(input(f"{self.spel_vards} Kuru kārti izspēlēt: ")) 
 
-        
+####################################################### Cikls        
         
         
 loop = False        
@@ -411,4 +445,7 @@ if spele.speles_stavoklis == "spēlēt spēli":
 while loop == True:
     #print(t)
     spele.speles_gaita()
-    spele.t+=1
+    if spele.t_virziens == "+":
+        spele.t+=1
+    if spele.t_virziens == "-":
+        spele.t-=1
