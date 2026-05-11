@@ -118,52 +118,164 @@ class spele_uno():
         self.karts_no_kaudzes = kaudze[-1]
         self.speles_stavoklis = "spēlēt spēli"
     def speles_gaita(self):
-        #print(self.t)
-        #print(self.kurs_speletajs)
-        print(self.karts_no_kaudzes)
-        
-        self.gajiens + 1 # Pieskaita gājienu
-        karta = self.kurs_speletajs + self.t
-        #print(karta)
-        
-        # Pārbauda, vai nepārsniedz spēlētāju daudzumu
-        if karta  > (len(self.visi_speletaji) - 1):
-            self.kurs_speletajs = 0
-            self.t = -1
-        else:
-            print(f"t:{self.t}\t")
-            print(f"t virziens:{self.t_virziens}\t")
-            # Izspēlē spēlētājs
-            self.visi_speletaji[karta].izspelet_karti(self.karts_no_kaudzes)
-            
-            #Kaudzei pievieno kārti
-            #kaudze.append()
-            
-            #Ko jādara nākamajam spēlētājam
-            self.nakamais =  self.visi_speletaji[karta].nakamajam_speletajam
-            match self.nakamais:
-                case "Jāizlaiž gājiens":
-                    self.t += 1
-                case "Mainās gājienu virziens":
-                    match self.t_virziens:
-                        case "+":
-                           self.t_virziens = "-"
-                        case "-":
-                           self.t_virziens = "+"
-                case "Jāuzceļ divas kārtis un jāizlaiž gājiens":
-                    self.t += 1
-                    print("+2 kārtis")
-                case  "Jāuzņem 4":
-                    print("+4 kārtis")
-                case _:
-                    pass
-                    
-                    
+        self.karts_no_kaudzes = kaudze[-1]
+        match self.nakamais:
+            case "Jāizlaiž gājiens":
+                print(self.karts_no_kaudzes)
 
-            
-            
-            #print(self.kurs_speletajs)
-            #print(self.t)
+                self.gajiens + 1 # Pieskaita gājienu
+                karta = self.kurs_speletajs + self.t
+                #print(karta)
+                karta+=1 # gājiena izlaišana
+
+                # Pārbauda, vai nepārsniedz spēlētāju daudzumu
+                if karta  > (len(self.visi_speletaji) - 1):
+                    self.kurs_speletajs = 0 
+                    self.t = -1
+
+                else:
+                    # Izspēlē spēlētājs
+                    self.visi_speletaji[karta].izspelet_karti(self.karts_no_kaudzes)
+                    #Kaudzei pievieno kārti
+                    kaudze.append(self.visi_speletaji[karta].karts)
+                    self.visi_speletaji[karta].nonemt_karti()
+                    #Ko jādara nākamajam spēlētājam
+                    self.nakamais =  self.visi_speletaji[karta].nakamajam_speletajam
+                
+            case "Mainās gājienu virziens":
+                match self.t_virziens:
+                    case "+":
+                        self.t_virziens = "-"
+                        print(self.karts_no_kaudzes)
+
+                        self.gajiens + 1 # Pieskaita gājienu
+                        karta = self.kurs_speletajs + self.t 
+                        #print(karta)
+                        
+                        #karta - 2 # iepriekšējā spēlētāja kārta
+
+                        # Pārbauda, vai nepārsniedz spēlētāju daudzumu
+                        if karta  > (len(self.visi_speletaji) - 1):
+                            self.kurs_speletajs = 0 
+                            self.t = -1
+
+                        else:
+                            # Izspēlē spēlētājs
+                            self.visi_speletaji[karta].izspelet_karti(self.karts_no_kaudzes)
+                            #Kaudzei pievieno kārti
+                            kaudze.append(self.visi_speletaji[karta].karts)
+                            self.visi_speletaji[karta].nonemt_karti()
+
+                            #Ko jādara nākamajam spēlētājam
+                            self.nakamais =  self.visi_speletaji[karta].nakamajam_speletajam
+                    case "-":
+                        self.t_virziens = "+"
+                        print(self.karts_no_kaudzes)
+
+                        self.gajiens + 1 # Pieskaita gājienu
+                        karta = self.kurs_speletajs + self.t
+                        #print(karta)
+                        
+                        #karta + 2 # nākamā spēlētāja kārta
+
+                        # Pārbauda, vai nepārsniedz spēlētāju daudzumu
+                        if karta  > (len(self.visi_speletaji) - 1):
+                            self.kurs_speletajs = 0 
+                            self.t = -1
+
+                        else:
+                            # Izspēlē spēlētājs
+                            self.visi_speletaji[karta].izspelet_karti(self.karts_no_kaudzes)
+                            #Kaudzei pievieno kārti
+                            kaudze.append(self.visi_speletaji[karta].karts)
+                            self.visi_speletaji[karta].nonemt_karti()
+
+                            #Ko jādara nākamajam spēlētājam
+                            self.nakamais =  self.visi_speletaji[karta].nakamajam_speletajam
+            case "Jāuzceļ divas kārtis un jāizlaiž gājiens":
+                self.gajiens + 1 # Pieskaita gājienu
+                karta = self.kurs_speletajs + self.t
+                #print(karta)
+
+                # Pārbauda, vai nepārsniedz spēlētāju daudzumu
+                if karta  > (len(self.visi_speletaji) - 1):
+                    self.kurs_speletajs = 0 
+                    self.t = -1
+
+                else:
+                    self.visi_speletaji[karta].pievienot_kartis([kaudze.pop() for i in range(2)])
+                    print("+2 kārtis")
+                
+                karta+=1 # gājiena izlaišana
+                    
+                # Pārbauda, vai nepārsniedz spēlētāju daudzumu
+                if karta  > (len(self.visi_speletaji) - 1):
+                    self.kurs_speletajs = 0 
+                    self.t = -1
+
+                else:
+                    # Izspēlē spēlētājs
+                    self.visi_speletaji[karta].izspelet_karti(self.karts_no_kaudzes)
+                    #Ko jādara nākamajam spēlētājam
+                    self.nakamais =  self.visi_speletaji[karta].nakamajam_speletajam
+                    #Kaudzei pievieno kārti
+                    kaudze.append(self.visi_speletaji[karta].karts)
+                    self.visi_speletaji[karta].nonemt_karti()
+            case  "Jāuzņem 4 un jāizlaiž gājiens":
+                self.gajiens + 1 # Pieskaita gājienu
+                karta = self.kurs_speletajs + self.t
+                #print(karta)
+
+                # Pārbauda, vai nepārsniedz spēlētāju daudzumu
+                if karta  > (len(self.visi_speletaji) - 1):
+                    self.kurs_speletajs = 0 
+                    self.t = -1
+
+                else:
+                    self.visi_speletaji[karta].pievienot_kartis([kaudze.pop() for i in range(4)])
+                    print("+4 kārtis")
+                    
+                    
+                karta+=1 # gājiena izlaišana
+                    
+                # Pārbauda, vai nepārsniedz spēlētāju daudzumu
+                if karta  > (len(self.visi_speletaji) - 1):
+                    self.kurs_speletajs = 0 
+                    self.t = -1
+
+                else:
+                    self.visi_speletaji[karta].pievienot_kartis([kaudze.pop() for i in range(4)])
+                    print("+4 kārtis")
+                    karta+=1 # gājiena izlaišana
+                    # Izspēlē spēlētājs
+                    self.visi_speletaji[karta].izspelet_karti(self.karts_no_kaudzes)
+                    #Ko jādara nākamajam spēlētājam
+                    self.nakamais =  self.visi_speletaji[karta].nakamajam_speletajam
+                    #Kaudzei pievieno kārti
+                    kaudze.append(self.visi_speletaji[karta].karts)
+                    self.visi_speletaji[karta].nonemt_karti()
+            case _:
+                print(self.karts_no_kaudzes)
+
+                self.gajiens + 1 # Pieskaita gājienu
+                karta = self.kurs_speletajs + self.t
+                #print(karta)
+
+                # Pārbauda, vai nepārsniedz spēlētāju daudzumu
+                if karta  > (len(self.visi_speletaji) - 1):
+                    self.kurs_speletajs = 0 
+                    self.t = -1
+
+                else:
+                    # Izspēlē spēlētājs
+                    self.visi_speletaji[karta].izspelet_karti(self.karts_no_kaudzes)
+                    #Kaudzei pievieno kārti
+                    kaudze.append(self.visi_speletaji[karta].karts)
+                    self.visi_speletaji[karta].nonemt_karti()
+
+                    #Ko jādara nākamajam spēlētājam
+                    self.nakamais =  self.visi_speletaji[karta].nakamajam_speletajam
+
         
         #print("\033c")
         print("\n")
@@ -244,29 +356,29 @@ class speletajs():
                                             else:
                                                 simb = self.karts[0]
                                                 kr = ''
-                                            match kaudzes_karts.find(kr):
+                                            match kaudzes_karts.find(simb):
                                                 case -1:
-                                                    match kaudzes_karts.find(simb):
-                                                        case -1:
-                                                            match k:
-                                                                case "W":
-                                                                    print(f"jāizvēlas cita kārts")
-                                                                    break
-                                                                case _:
-                                                                    kura_karts += 1
-                                                        case _:
+                                                    match k:
+                                                        case "W":
                                                             print(f"jāizvēlas cita kārts")
                                                             break
+                                                        case _:
+                                                            match kaudzes_karts.find(kr):
+                                                                case -1:
+                                                                    kura_karts += 1
+                                                                case _:
+                                                                    print(f"jāizvēlas cita kārts")
+                                                                    break
                                                 case _:
                                                     print(f"jāizvēlas cita kārts")
                                                     break
                                         match kura_karts:
                                             case self.visas_kartis:
                                                 print(f"Kārts {self.karts} ir izspēlēta")
-                                                self.nakamajam_speletajam = "Jāuzņem 4"
+                                                self.nakamajam_speletajam = "Jāuzņem 4 un jāizlaiž gājiens"
                                                 print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")                  
-                                            case _:
-                                                continue           
+                                            #case _:
+                                            #    continue           
                             case 'E': # Wild tukšā kārts
                                 pass
                             
@@ -421,7 +533,12 @@ class speletajs():
                             
             else:
                 print(f"Nav kārts ar kārtas skaitli {cip}")
-                #cip = int(input(f"{self.spel_vards} Kuru kārti izspēlēt: ")) 
+                #cip = int(input(f"{self.spel_vards} Kuru kārti izspēlēt: "))
+                
+    def nonemt_karti(self):
+        if self.karts != "":
+            self.speletaja_kartis.remove(self.karts)
+            self.karts = "" 
 
 ####################################################### Cikls        
         
