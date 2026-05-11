@@ -67,6 +67,7 @@ import random
 class spele_uno():
     def __init__(self):
         self.visi_speletaji = []
+        self.katra_sp_punkti = []
         self.speles_stavoklis: str = "skaita ievade"
         self.gajiens = 0
         self.kurs_speletajs = 0
@@ -74,6 +75,9 @@ class spele_uno():
         self.t_virziens = "+"
         self.karts_no_kaudzes = ""
         self.nakamais = ''
+        
+        self.uzvaretajs = ""
+        self.max_punkti = 0
     def speletaju_sk(self):
         global spelet_sk
         spelet_sk = int(input("Ievadi no 2 - 10 spēlētāju skaitu:"))
@@ -82,6 +86,8 @@ class spele_uno():
         if spelet_sk > 10:
             spelet_sk = int(input("Spēlētāju skaits nevar būt lielāks par 10:"))
         else:
+            for i in range(spelet_sk):
+                self.katra_sp_punkti.append(0)
             self.speles_stavoklis = "vārdu ievade"
     def speletaju_vardu_ievade(self):
         #global kurs_speletajs
@@ -152,7 +158,7 @@ class spele_uno():
                         karta = self.kurs_speletajs + self.t 
                         #print(karta)
                         
-                        #karta - 2 # iepriekšējā spēlētāja kārta
+                        karta - 2 # iepriekšējā spēlētāja kārta
 
                         # Pārbauda, vai nepārsniedz spēlētāju daudzumu
                         if karta  > (len(self.visi_speletaji) - 1):
@@ -176,7 +182,7 @@ class spele_uno():
                         karta = self.kurs_speletajs + self.t
                         #print(karta)
                         
-                        #karta + 2 # nākamā spēlētāja kārta
+                        karta + 2 # nākamā spēlētāja kārta
 
                         # Pārbauda, vai nepārsniedz spēlētāju daudzumu
                         if karta  > (len(self.visi_speletaji) - 1):
@@ -214,6 +220,7 @@ class spele_uno():
                     self.t = -1
 
                 else:
+                    print(self.karts_no_kaudzes)
                     # Izspēlē spēlētājs
                     self.visi_speletaji[karta].izspelet_karti(self.karts_no_kaudzes)
                     #Ko jādara nākamajam spēlētājam
@@ -254,6 +261,48 @@ class spele_uno():
                     #Kaudzei pievieno kārti
                     kaudze.append(self.visi_speletaji[karta].karts)
                     self.visi_speletaji[karta].nonemt_karti()
+            
+            case "Jāmaina kārtis":
+                # Nodrošina, ka paliek pie paša spēlētāja
+                match self.t_virziens:
+                    case "+":
+                        self.t -= 1
+                    case "-":
+                        self.t += 1
+                        
+                karta = self.kurs_speletajs + self.t
+                
+                #Izvēlas, ar kuru spēlētāju mainīties
+                vards = input("Ar kuru spēlētāju samainīties ar kārtīm:")
+                for sp in self.visi_speletaji:
+                    if sp.spel_vards == vards:
+                        sag_kart = self.visi_speletaji[karta].speletaja_kartis
+                        self.visi_speletaji[karta].speletaja_kartis.clear()
+                        self.visi_speletaji[karta].pievienot_kartis(sp.speletaja_kartis)
+                        sp.speletaja_kartis.clear()
+                        sp.pievienot_kartis(sag_kart)
+                    
+                print(self.karts_no_kaudzes)
+
+                self.gajiens + 1 # Pieskaita gājienu
+                karta = self.kurs_speletajs + self.t
+                #print(karta)
+
+                # Pārbauda, vai nepārsniedz spēlētāju daudzumu
+                if karta  > (len(self.visi_speletaji) - 1):
+                    self.kurs_speletajs = 0 
+                    self.t = -1
+
+                else:
+                    # Izspēlē spēlētājs
+                    self.visi_speletaji[karta].izspelet_karti(self.karts_no_kaudzes)
+                    #Kaudzei pievieno kārti
+                    kaudze.append(self.visi_speletaji[karta].karts)
+                    self.visi_speletaji[karta].nonemt_karti()
+
+                    #Ko jādara nākamajam spēlētājam
+                    self.nakamais =  self.visi_speletaji[karta].nakamajam_speletajam
+                                                                    
             case _:
                 print(self.karts_no_kaudzes)
 
@@ -279,6 +328,43 @@ class spele_uno():
         
         #print("\033c")
         print("\n")
+        for sp in self.visi_speletaji:
+            if sp.speletaja_kartis == None:
+                self.speles_stavoklis = "Punktu saskaite"
+    def punktu_saskaitisana(self):
+        for spel in self.visi_speletaji:
+            punkti = 0
+            for karts in spel.speletaja_kartis:
+                simbols = karts[:-1]
+                match simbols:
+                    case "W":
+                        punkti += 50
+                    case "Sk" | "Dr2" | "Rev":
+                        punkti += 20
+                    case _:
+                        punkti += str(simbols)
+            self.katra_sp_punkti[self.visi_speletaji.index(spel)] += punkti
+            if punkti <= 500:
+                self.speles_stavoklis = "beigas"
+                self.uzvaretajs = spel.spel_vards
+                self.max_punkti = punkti
+            else:
+                
+                spel.speletaja_kartis.clear()
+        self.speles_stavoklis = "izdalīt kārtis"
+                
+    def speles_beigas(self):
+        print(f"Uzvarēja {self.uzvaretajs} ar {self.max_punkti} punktiem {self.gajiens} gājienā")
+        print("Pārējie spēlētāji:")
+        for sp in self.visi_speletaji:
+            print(f"{sp.spel_vards}: {self.katra_sp_punkti[self.visi_speletaji.index(sp)]}")
+        izv = input("Vai spēlēt jaunu spēli? 0 = nē; 1 = jā:")
+        if izv == 0:
+            exit()
+        if izv == 1:
+            self.speles_stavoklis = "skaita ievade"
+                 
+                        
 
 ################################################################ Katram spēlētājam
             
@@ -294,9 +380,7 @@ class speletajs():
             self.speletaja_kartis.append(i)
             
     def izspelet_karti(self, kaudzes_karts):
-        print([f"{i+1}.: {self.speletaja_kartis[i]}" for i in range(len(self.speletaja_kartis))])
-        
-        
+        print([f"{i+1}.: {self.speletaja_kartis[i]}" for i in range(len(self.speletaja_kartis))])      
         turn = True
         
         while turn:
@@ -376,11 +460,16 @@ class speletajs():
                                             case self.visas_kartis:
                                                 print(f"Kārts {self.karts} ir izspēlēta")
                                                 self.nakamajam_speletajam = "Jāuzņem 4 un jāizlaiž gājiens"
-                                                print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")                  
+                                                print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
+                                                turn = False                  
                                             #case _:
                                             #    continue           
                             case 'E': # Wild tukšā kārts
-                                pass
+                                # Samaina kārtis ar kādu citu
+                                self.nakamajam_speletajam = "Jāmaina kārtis"
+                                print(f"Kārts {self.karts} ir izspēlēta")
+                                print(f"Nākamajam spēlētājam: {self.nakamajam_speletajam}")
+                                turn = False
                             
                     case "Sk": # Skip
                         match kaudzes_karts.find(simbols):
@@ -538,7 +627,8 @@ class speletajs():
     def nonemt_karti(self):
         if self.karts != "":
             self.speletaja_kartis.remove(self.karts)
-            self.karts = "" 
+            self.karts = ""
+     
 
 ####################################################### Cikls        
         
@@ -558,6 +648,11 @@ if spele.speles_stavoklis == "spēlēt spēli":
     print("\033c")
     #spele.speles_gaita()
     loop = True
+if spele.speles_stavoklis == "Punktu saskaite":
+    spele.punktu_saskaitisana()
+if spele.speles_stavoklis == "beigas":
+    spele.speles_beigas()
+    
 
 while loop == True:
     #print(t)
